@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Jante ChAi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader">
+            <span class="letter">J</span>
+            <span class="letter">a</span>
+            <span class="letter">n</span>
+            <span class="letter">t</span>
+            <span class="letter">e</span>
+            <span class="letter">_</span>
+            <span class="letter">C</span>
+            <span class="letter">h</span>
+            <span class="letter">A</span>
+            <span class="letter">i</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="https://via.placeholder.com/40x40?text=JC" alt="Jante ChAi Logo">
+                <span class="brand-text"><b>Jante ChAi</b></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link english">Home</a>
+                        <a href="index.html" class="nav-link bangla">হোম</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#features" class="nav-link english">Features</a>
+                        <a href="index.html#features" class="nav-link bangla">বৈশিষ্ট্য</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#services" class="nav-link english">Services</a>
+                        <a href="index.html#services" class="nav-link bangla">সেবাসমূহ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#demo" class="nav-link english">Demo</a>
+                        <a href="index.html#demo" class="nav-link bangla">ডেমো</a>
+                    </li>
+                    <li class="nav-item" id="authNavItem">
+                        <a href="auth.html" class="btn btn-primary nav-btn english">Login/Register</a>
+                        <a href="auth.html" class="btn btn-primary nav-btn bangla">লগইন/রেজিস্টার</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="language-switcher" id="languageSwitcher">
+                            <div class="current-lang">
+                                <span id="currentLang">EN</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="language-options" id="languageOptions">
+                                <div class="language-option active" data-lang="en">English</div>
+                                <div class="language-option" data-lang="bn">বাংলা</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dark-mode-toggle" id="darkModeToggle">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                            <div class="toggle-ball"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Section -->
+    <section id="auth" class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-image">
+                    <div class="auth-image-content">
+                        <h2 class="english">Welcome <br /> to <br /> Jante ChAi</h2>
+                        <h2 class="bangla">জানতে চাই-এ স্বাগতম</h2>
+                        <p class="english">
+                            Access all government services easily through our secure platform. Create an account or login to get
+                            started.
+                        </p>
+                        <p class="bangla">
+                            আমাদের নিরাপদ প্ল্যাটফর্মের মাধ্যমে সহজেই সমস্ত সরকারি সেবা অ্যাক্সেস করুন। শুরু করতে একটি অ্যাকাউন্ট তৈরি করুন বা লগইন করুন।
+                        </p>
+                    </div>
+                </div>
+                <div class="auth-form-container">
+                    <div class="auth-tabs">
+                        <div class="auth-tab active" id="loginTab">
+                            <span class="english">Login</span>
+                            <span class="bangla">লগইন</span>
+                        </div>
+                        <div class="auth-tab" id="registerTab">
+                            <span class="english">Register</span>
+                            <span class="bangla">রেজিস্টার</span>
+                        </div>
+                    </div>
+
+                    <div id="loginForm" class="tab-content active">
+                        <div class="auth-form">
+                            <h3 class="english">Login to Your Account</h3>
+                            <h3 class="bangla">আপনার অ্যাকাউন্টে লগইন করুন</h3>
+
+                            <div id="loginError" class="alert alert-danger" style="display: none;"></div>
+
+                            <form id="loginFormElement">
+                                <div class="form-group">
+                                    <label for="loginEmail" class="english">Email or Mobile Number</label>
+                                    <label for="loginEmail" class="bangla">ইমেইল বা মোবাইল নম্বর</label>
+                                    <input type="text" class="form-control" id="loginEmail" name="loginEmail" placeholder="Enter your email or mobile number">
+                                    <div class="invalid-feedback" id="loginEmailError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword" class="english">Password</label>
+                                    <label for="loginPassword" class="bangla">পাসওয়ার্ড</label>
+                                    <input type="password" class="form-control" id="loginPassword" name="loginPassword" placeholder="Enter your password">
+                                    <div class="invalid-feedback" id="loginPasswordError"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                                            <label class="form-check-label english" for="rememberMe">Remember me</label>
+                                            <label class="form-check-label bangla" for="rememberMe">মনে রাখুন</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="forgot-password">
+                                            <a href="#" class="english">Forgot password?</a>
+                                            <a href="#" class="bangla">পাসওয়ার্ড ভুলে গেছেন?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary english">Login</button>
+                                <button type="submit" class="btn btn-primary bangla">লগইন করুন</button>
+                                <div class="divider">
+                                    <span class="english">Or</span>
+                                    <span class="bangla">অথবা</span>
+                                </div>
+                                <div class="social-login">
+                                    <a href="#" class="social-login-btn facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="social-login-btn google">
+                                        <i class="fab fa-google"></i>
+                                    </a>
+                                </div>
+                                <div class="register-link">
+                                    <p class="english">
+                                        Don't have an account? <a href="#" id="switchToRegister">Register</a>
+                                    </p>
+                                    <p class="bangla">
+                                        অ্যাকাউন্ট নেই? <a href="#" id="switchToRegisterBn">রেজিস্টার করুন</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="registerForm" class="tab-content">
+                        <div class="auth-form">
+                            <h3 class="english">Create a New Account</h3>
+                            <h3 class="bangla">নতুন অ্যাকাউন্ট তৈরি করুন</h3>
+                            <form id="registerFormElement">
+                                <div class="form-group">
+                                    <label for="registerName" class="english">Full Name</label>
+                                    <label for="registerName" class="bangla">পূর্ণ নাম</label>
+                                    <input type="text" class="form-control" id="registerName" name="registerName" placeholder="Enter your full name">
+                                    <div class="invalid-feedback" id="registerNameError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerEmail" class="english">Email</label>
+                                    <label for="registerEmail" class="bangla">ইমেইল</label>
+                                    <input type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="Enter your email">
+                                    <div class="invalid-feedback" id="registerEmailError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerMobile" class="english">Mobile Number</label>
+                                    <label for="registerMobile" class="bangla">মোবাইল নম্বর</label>
+                                    <input type="tel" class="form-control" id="registerMobile" name="registerMobile" placeholder="Enter your mobile number">
+                                    <div class="invalid-feedback" id="registerMobileError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPassword" class="english">Password</label>
+                                    <label for="registerPassword" class="bangla">পাসওয়ার্ড</label>
+                                    <input type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Create a password">
+                                    <div class="invalid-feedback" id="registerPasswordError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerConfirmPassword" class="english">Confirm Password</label>
+                                    <label for="registerConfirmPassword" class="bangla">পাসওয়ার্ড নিশ্চিত করুন</label>
+                                    <input type="password" class="form-control" id="registerConfirmPassword" name="registerConfirmPassword" placeholder="Confirm your password">
+                                    <div class="invalid-feedback" id="registerConfirmPasswordError"></div>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms">
+                                    <label class="form-check-label english" for="agreeTerms">
+                                        I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+                                    </label>
+                                    <label class="form-check-label bangla" for="agreeTerms">
+                                        আমি <a href="#">শর্তাবলী</a> এবং <a href="#">গোপনীয়তা নীতি</a> মেনে নিচ্ছি
+                                    </label>
+                                    <div class="invalid-feedback" id="agreeTermsError"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary english">Register</button>
+                                <button type="submit" class="btn btn-primary bangla">রেজিস্টার করুন</button>
+                                <div class="divider">
+                                    <span class="english">Or</span>
+                                    <span class="bangla">অথবা</span>
+                                </div>
+                                <div class="social-login">
+                                    <a href="#" class="social-login-btn facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="social-login-btn google">
+                                        <i class="fab fa-google"></i>
+                                    </a>
+                                </div>
+                                <div class="register-link">
+                                    <p class="english">
+                                        Already have an account? <a href="#" id="switchToLogin">Login</a>
+                                    </p>
+                                    <p class="bangla">
+                                        ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="#" id="switchToLoginBn">লগইন করুন</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-about">
+                        <h3 class="footer-logo">
+                            <img src="https://via.placeholder.com/40x40?text=JC" alt="Jante ChAi Logo">
+                            <span class="english">Jante ChAi</span>
+                            <span class="bangla">জানতে চাই</span>
+                        </h3>
+                        <p class="english">
+                            Use our platform to easily access government information and services. We'll help you save time and
+                            effort.
+                        </p>
+                        <p class="bangla">
+                            সরকারি তথ্য এবং সেবাসমূহ সহজেই পাওয়ার জন্য আমাদের প্ল্যাটফর্ম ব্যবহার করুন। আমরা আপনাকে সময় এবং প্রচেষ্টা বাঁচাতে সাহায্য করব।
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-links">
+                        <h3 class="english">Quick Links</h3>
+                        <h3 class="bangla">দ্রুত লিঙ্ক</h3>
+                        <ul>
+                            <li>
+                                <a href="index.html" class="english">Home</a>
+                            </li>
+                            <li>
+                                <a href="index.html" class="bangla">হোম</a>
+                            </li>
+                            <li>
+                                <a href="index.html#features" class="english">Features</a>
+                            </li>
+                            <li>
+                                <a href="index.html#features" class="bangla">বৈশিষ্ট্য</a>
+                            </li>
+                            <li>
+                                <a href="index.html#services" class="english">Services</a>
+                            </li>
+                            <li>
+                                <a href="index.html#services" class="bangla">সেবাসমূহ</a>
+                            </li>
+                            <li>
+                                <a href="index.html#demo" class="english">Demo</a>
+                            </li>
+                            <li>
+                                <a href="index.html#demo" class="bangla">ডেমো</a>
+                            </li>
+                            <li>
+                                <a href="auth.html" class="english">Login/Register</a>
+                            </li>
+                            <li>
+                                <a href="auth.html" class="bangla">লগইন/রেজিস্টার</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-links">
+                        <h3 class="english">Services</h3>
+                        <h3 class="bangla">সেবাসমূহ</h3>
+                        <ul>
+                            <li>
+                                <a href="#" class="english">National ID</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">জাতীয় পরিচয়পত্র</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Birth Certificate</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">জন্ম নিবন্ধন</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Passport</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">পাসপোর্ট</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Driving License</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">ড্রাইভিং লাইসেন্স</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Tax Services</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">কর সেবা</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-contact">
+                        <h3 class="english">Contact Us</h3>
+                        <h3 class="bangla">যোগাযোগ করুন</h3>
+                        <p class="english">
+                            <i class="fas fa-map-marker-alt"></i> 123 Digital Bangladesh Road, Dhaka-1200
+                        </p>
+                        <p class="bangla">
+                            <i class="fas fa-map-marker-alt"></i> ১২৩ ডিজিটাল বাংলাদেশ রোড, ঢাকা-১২০০
+                        </p>
+                        <p class="english">
+                            <i class="fas fa-phone-alt"></i> +880 1712 345678
+                        </p>
+                        <p class="bangla">
+                            <i class="fas fa-phone-alt"></i> +৮৮০ ১৭১২ ৩৪৫৬৭৮
+                        </p>
+                        <p class="english">
+                            <i class="fas fa-envelope"></i> info@jantechai.com.bd
+                        </p>
+                        <p class="bangla">
+                            <i class="fas fa-envelope"></i> info@jantechai.com.bd
+                        </p>
+                        <p class="english">
+                            <i class="fas fa-clock"></i> Monday - Friday: 9am - 5pm
+                        </p>
+                        <p class="bangla">
+                            <i class="fas fa-clock"></i> সোমবার - শুক্রবার: সকাল ৯টা - বিকাল ৫টা
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="copyright english">© 2023 Jante ChAi. All rights reserved.</p>
+                        <p class="copyright bangla">© ২০২৩ জানতে চাই। সর্বস্বত্ব সংরক্ষিত।</p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="footer-bottom-links">
+                            <li>
+                                <a href="#" class="english">Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">গোপনীয়তা নীতি</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Terms of Service</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">ব্যবহারের শর্তাবলী</a>
+                            </li>
+                            <li>
+                                <a href="#" class="english">Cookie Policy</a>
+                            </li>
+                            <li>
+                                <a href="#" class="bangla">কুকি নীতি</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

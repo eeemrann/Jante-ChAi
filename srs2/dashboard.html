@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jante ChAi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader">
+            <span class="letter">J</span>
+            <span class="letter">a</span>
+            <span class="letter">n</span>
+            <span class="letter">t</span>
+            <span class="letter">e</span>
+            <span class="letter">_</span>
+            <span class="letter">C</span>
+            <span class="letter">h</span>
+            <span class="letter">A</span>
+            <span class="letter">i</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <img src="https://via.placeholder.com/40x40?text=JC" alt="Jante ChAi Logo">
+                <span class="brand-text"><b>Jante ChAi</b></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link english">Home</a>
+                        <a href="index.html" class="nav-link bangla">হোম</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#features" class="nav-link english">Features</a>
+                        <a href="index.html#features" class="nav-link bangla">বৈশিষ্ট্য</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#services" class="nav-link english">Services</a>
+                        <a href="index.html#services" class="nav-link bangla">সেবাসমূহ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#demo" class="nav-link english">Demo</a>
+                        <a href="index.html#demo" class="nav-link bangla">ডেমো</a>
+                    </li>
+                    <li class="nav-item" id="userDropdown">
+                        <div class="dropdown">
+                            <button class="btn btn-primary nav-btn dropdown-toggle english" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="userName">User</span>
+                            </button>
+                            <button class="btn btn-primary nav-btn dropdown-toggle bangla" type="button" id="dropdownMenuButtonBn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="userNameBn">ব্যবহারকারী</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <a href="dashboard.html" class="dropdown-item english">Dashboard</a>
+                                    <a href="dashboard.html" class="dropdown-item bangla">ড্যাশবোর্ড</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item english" id="logoutBtn">Logout</a>
+                                    <a href="#" class="dropdown-item bangla" id="logoutBtnBn">লগআউট</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="language-switcher" id="languageSwitcher">
+                            <div class="current-lang">
+                                <span id="currentLang">EN</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="language-options" id="languageOptions">
+                                <div class="language-option active" data-lang="en">English</div>
+                                <div class="language-option" data-lang="bn">বাংলা</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dark-mode-toggle" id="darkModeToggle">
+                            <i class="fas fa-sun sun-icon"></i>
+                            <i class="fas fa-moon moon-icon"></i>
+                            <div class="toggle-ball"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
+        <!-- Mobile Sidebar Toggle -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <!-- User Profile -->
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h4 class="user-name english" id="sidebarUserName">User</h4>
+                <h4 class="user-name bangla" id="sidebarUserNameBn">ব্যবহারকারী</h4>
+                <p class="user-email" id="userEmail">user@example.com</p>
+                <div class="user-status english">Verified</div>
+                <div class="user-status bangla">যাচাইকৃত</div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <div class="sidebar-menu">
+                <div class="menu-category english">Main</div>
+                <div class="menu-category bangla">প্রধান</div>
+
+                <div class="menu-item" data-tab="dashboard">
+                    <div class="menu-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="menu-text english">Dashboard</div>
+                    <div class="menu-text bangla">ড্যাশবোর্ড</div>
+                </div>
+
+                <div class="menu-item active" data-tab="chat">
+                    <div class="menu-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="menu-text english">Chat Assistant</div>
+                    <div class="menu-text bangla">চ্যাট সহকারী</div>
+                </div>
+
+                <div class="menu-item" data-tab="services">
+                    <div class="menu-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="menu-text english">My Services</div>
+                    <div class="menu-text bangla">আমার সেবাসমূহ</div>
+                </div>
+
+                <div class="menu-item" data-tab="applications">
+                    <div class="menu-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="menu-text english">Applications</div>
+                    <div class="menu-text bangla">আবেদনসমূহ</div>
+                    <div class="menu-badge">3</div>
+                </div>
+
+                <div class="menu-item" data-tab="notifications">
+                    <div class="menu-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-text english">Notifications</div>
+                    <div class="menu-text bangla">বিজ্ঞপ্তি</div>
+                    <div class="menu-badge">5</div>
+                </div>
+
+                <div class="menu-category english">Account</div>
+                <div class="menu-category bangla">অ্যাকাউন্ট</div>
+
+                <div class="menu-item" data-tab="profile">
+                    <div class="menu-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="menu-text english">My Profile</div>
+                    <div class="menu-text bangla">আমার প্রোফাইল</div>
+                </div>
+
+                <div class="menu-item" data-tab="documents">
+                    <div class="menu-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="menu-text english">My Documents</div>
+                    <div class="menu-text bangla">আমার ডকুমেন্টস</div>
+                </div>
+
+                <div class="menu-item" data-tab="settings">
+                    <div class="menu-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="menu-text english">Settings</div>
+                    <div class="menu-text bangla">সেটিংস</div>
+                </div>
+
+                <div class="menu-category english">Support</div>
+                <div class="menu-category bangla">সহায়তা</div>
+
+                <div class="menu-item" data-tab="help">
+                    <div class="menu-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="menu-text english">Help Center</div>
+                    <div class="menu-text bangla">সাহায্য কেন্দ্র</div>
+                </div>
+
+                <div class="menu-item" data-tab="feedback">
+                    <div class="menu-icon">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div class="menu-text english">Feedback</div>
+                    <div class="menu-text bangla">মতামত</div>
+                </div>
+
+                <div class="menu-item" id="sidebarLogout">
+                    <div class="menu-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="menu-text english">Logout</div>
+                    <div class="menu-text bangla">লগআউট</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Chat Assistant Tab (Default Active) -->
+            <div class="tab-content active" id="chatTab">
+                <div class="dashboard-header">
+                    <h1 class="welcome-message english">Chat Assistant</h1>
+                    <h1 class="welcome-message bangla">চ্যাট সহকারী</h1>
+                    <p class="welcome-subtitle english">
+                        Ask any questions about government services and get instant answers.
+                    </p>
+                    <p class="welcome-subtitle bangla">সরকারি সেবা সম্পর্কে যেকোনো প্রশ্ন করুন এবং তাৎক্ষণিক উত্তর পান।</p>
+                </div>
+
+                <!-- Service Categories -->
+                <h2 class="section-title slide-in-left">
+                    <i class="fas fa-th-large"></i>
+                    <span class="english">Service Categories</span>
+                    <span class="bangla">সেবা বিভাগসমূহ</span>
+                </h2>
+
+                <div class="service-categories slide-in-left">
+                    <div class="service-category" data-service="nid">
+                        <div class="service-category-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="service-category-title english">National ID</h3>
+                        <h3 class="service-category-title bangla">জাতীয় পরিচয়পত্র</h3>
+                    </div>
+
+                    <div class="service-category" data-service="passport">
+                        <div class="service-category-icon">
+                            <i class="fas fa-passport"></i>
+                        </div>
+                        <h3 class="service-category-title english">Passport</h3>
+                        <h3 class="service-category-title bangla">পাসপোর্ট</h3>
+                    </div>
+
+                    <div class="service-category" data-service="birth">
+                        <div class="service-category-icon">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                        <h3 class="service-category-title english">Birth Certificate</h3>
+                        <h3 class="service-category-title bangla">জন্ম নিবন্ধন</h3>
+                    </div>
+
+                    <div class="service-category" data-service="driving">
+                        <div class="service-category-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3 class="service-category-title english">Driving License</h3>
+                        <h3 class="service-category-title bangla">ড্রাইভিং লাইসেন্স</h3>
+                    </div>
+
+                    <div class="service-category" data-service="tax">
+                        <div class="service-category-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h3 class="service-category-title english">Tax Services</h3>
+                        <h3 class="service-category-title bangla">কর সেবা</h3>
+                    </div>
+                </div>
+
+                <!-- Chat Interface -->
+                <div class="chat-container slide-in-right">
+                    <div class="chat-header">
+                        <div class="chat-header-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h3 class="chat-header-title english">Jante ChAi Assistant</h3>
+                            <h3 class="chat-header-title bangla">জানতে চাই সহকারী</h3>
+                            <p class="chat-header-subtitle english">Ask me anything about government services</p>
+                            <p class="chat-header-subtitle bangla">সরকারি সেবা সম্পর্কে আমাকে যেকোনো প্রশ্ন করুন</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Initial bot message -->
+                        <div class="message bot-message">
+                            <div class="message-avatar bot-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p class="message-text english">Hello! I'm your Jante ChAi assistant. How can I help you today with government services?</p>
+                                <p class="message-text bangla">হ্যালো! আমি আপনার জানতে চাই সহকারী। সরকারি সেবা সম্পর্কে আজ আমি আপনাকে কীভাবে সাহায্য করতে পারি?</p>
+                                <div class="message-time" id="initialMessageTime"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="message-avatar bot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+
+                    <!-- Chat input -->
+                    <div class="chat-input">
+                        <div class="chat-input-container">
+                            <button class="chat-voice-btn" id="voiceBtn">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <input type="text" class="chat-input-field" id="messageInput" placeholder="Type your question here...">
+                            <button class="chat-send-btn" id="sendBtn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content" id="dashboardTab">
+                <div class="dashboard-header">
+                    <h1 class="welcome-message english">Welcome back, <span id="dashboardUserName">User</span>!</h1>
+                    <h1 class="welcome-message bangla">স্বাগতম, <span id="dashboardUserNameBn">ব্যবহারকারী</span>!</h1>
+                    <p class="welcome-subtitle english">
+                        Here's an overview of your government services and applications.
+                    </p>
+                    <p class="welcome-subtitle bangla">এখানে আপনার সরকারি সেবা এবং আবেদনের একটি সংক্ষিপ্ত বিবরণ রয়েছে।</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="stat-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3 class="stat-title english">Active Services</h3>
+                        <h3 class="stat-title bangla">সক্রিয় সেবাসমূহ</h3>
+                        <div class="stat-value">4</div>
+                        <p class="stat-description english">Services currently active</p>
+                        <p class="stat-description bangla">বর্তমানে সক্রিয় সেবাসমূহ</p>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="stat-title english">Pending Applications</h3>
+                        <h3 class="stat-title bangla">অপেক্ষমান আবেদন</h3>
+                        <div class="stat-value">3</div>
+                        <p class="stat-description english">Applications awaiting approval</p>
+                        <p class="stat-description bangla">অনুমোদনের জন্য অপেক্ষমান আবেদন</p>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="stat-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 class="stat-title english">Notifications</h3>
+                        <h3 class="stat-title bangla">বিজ্ঞপ্তি</h3>
+                        <div class="stat-value">5</div>
+                        <p class="stat-description english">Unread notifications</p>
+                        <p class="stat-description bangla">অপঠিত বিজ্ঞপ্তি</p>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.4s;">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="stat-title english">Upcoming Renewals</h3>
+                        <h3 class="stat-title bangla">আসন্ন নবায়ন</h3>
+                        <div class="stat-value">2</div>
+                        <p class="stat-description english">Services due for renewal</p>
+                        <p class="stat-description bangla">নবায়নের জন্য বাকি সেবাসমূহ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other tabs would be implemented similarly -->
+
+            <!-- Footer -->
+            <div class="dashboard-footer">
+                <p class="english">© 2023 Jante ChAi. All rights reserved.</p>
+                <p class="bangla">© ২০২৩ জানতে চাই। সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
