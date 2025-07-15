@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.10.0",
@@ -17,11 +18,13 @@
   "name": "jante_ch-ai",
   "version": "1.0.0",
   "description": "",
-  "main": "server/server.js",
+  "main": "api/index.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "node --watch server/server.js",
-    "dev:verbose": "NODE_ENV=development node --watch server/server.js",
+    "start": "node dev-server.js",
+    "dev": "node --watch dev-server.js",
+    "dev:verbose": "NODE_ENV=development node --watch dev-server.js",
+    "build": "echo 'No build step required for serverless deployment'",
+    "vercel-build": "echo 'Vercel build completed'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

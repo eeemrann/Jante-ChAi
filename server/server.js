@@ -66,6 +66,17 @@ async function connectToDatabase() {
     }
 }
 
+// Database connection helper
+async function connectToDatabase() {
+    try {
+        await mongodb.connect();
+        console.log('[INFO] MongoDB connected successfully');
+    } catch (error) {
+        console.error('[ERROR] MongoDB connection failed:', error);
+        throw error;
+    }
+}
+
 // Routes
 
 // Test route
@@ -501,102 +512,5 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/homepage.html'));
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-
-async function startServer() {
-    try {
-        console.log('\n[INFO] Starting Jante CH-AI Server...');
-        console.log('[INFO] Initializing services...\n');
-        
-        // Initialize Auth Service and MongoDB
-        await connectToDatabase();
-        
-        // Start Express server with port conflict handling
-        const server = app.listen(PORT, () => {
-            const actualPort = server.address().port;
-            console.log('\n' + '='.repeat(60));
-            console.log('JANTE CH-AI SERVER STARTED SUCCESSFULLY');
-            console.log('='.repeat(60));
-            console.log(`Server URL: http://localhost:${actualPort}`);
-            console.log(`Local Network: http://0.0.0.0:${actualPort}`);
-            console.log(`Database: MongoDB Atlas (Connected)`);
-            console.log(`Authentication: JWT-based system (Ready)`);
-            console.log(`AI Service: Gemini API (Ready)`);
-            console.log(`Frontend: Static files served from root`);
-            console.log(`Started at: ${new Date().toLocaleString()}`);
-            console.log('='.repeat(60));
-            console.log(`Quick Links:`);
-            console.log(`  • Homepage: http://localhost:${actualPort}/`);
-            console.log(`  • Authentication: http://localhost:${actualPort}/auth`);
-            console.log(`  • User Dashboard: http://localhost:${actualPort}/user`);
-            console.log(`  • API Test: http://localhost:${actualPort}/api/test`);
-            console.log('='.repeat(60) + '\n');
-        }).on('error', (err) => {
-            if (err.code === 'EADDRINUSE') {
-                console.log(`[WARN] Port ${PORT} is in use, trying alternative ports...`);
-                // Try alternative ports
-                const alternativePorts = [3001, 3002, 3003, 3004, 3005];
-                let portIndex = 0;
-                
-                const tryPort = () => {
-                    if (portIndex >= alternativePorts.length) {
-                        console.error('[ERROR] No available ports found. Please free up a port or specify a different port.');
-                        process.exit(1);
-                    }
-                    
-                    const testPort = alternativePorts[portIndex];
-                    const testServer = app.listen(testPort, () => {
-                        const actualPort = testServer.address().port;
-                        console.log('\n' + '='.repeat(60));
-                        console.log('JANTE CH-AI SERVER STARTED SUCCESSFULLY');
-                        console.log('='.repeat(60));
-                        console.log(`Server URL: http://localhost:${actualPort}`);
-                        console.log(`Local Network: http://0.0.0.0:${actualPort}`);
-                        console.log(`Database: MongoDB Atlas (Connected)`);
-                        console.log(`Authentication: JWT-based system (Ready)`);
-                        console.log(`AI Service: Gemini API (Ready)`);
-                        console.log(`Frontend: Static files served from root`);
-                        console.log(`Started at: ${new Date().toLocaleString()}`);
-                        console.log('='.repeat(60));
-                        console.log(`Quick Links:`);
-                        console.log(`  • Homepage: http://localhost:${actualPort}/`);
-                        console.log(`  • Authentication: http://localhost:${actualPort}/auth`);
-                        console.log(`  • User Dashboard: http://localhost:${actualPort}/user`);
-                        console.log(`  • API Test: http://localhost:${actualPort}/api/test`);
-                        console.log('='.repeat(60) + '\n');
-                    }).on('error', (testErr) => {
-                        if (testErr.code === 'EADDRINUSE') {
-                            testServer.close();
-                            portIndex++;
-                            tryPort();
-                        } else {
-                            console.error('[ERROR] Server error:', testErr);
-                            process.exit(1);
-                        }
-                    });
-                };
-                
-                tryPort();
-            } else {
-                console.error('[ERROR] Server error:', err);
-                process.exit(1);
-            }
-        });
-        
-    } catch (error) {
-        console.error('[ERROR] Failed to start server:', error);
-        process.exit(1);
-    }
-}
-
-// Shutdown
-process.on('SIGINT', () => {
-    console.log('\n[INFO] Server shutting down...');
-    process.exit(0);
-});
-
-// Start the server
-startServer();
-
+// Export the Express app for potential local development
 export default app;
