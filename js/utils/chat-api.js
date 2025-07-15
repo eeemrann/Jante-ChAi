@@ -74,6 +74,7 @@ class ChatAPI {
             return {
                 response: data.data.response,
                 sessionId: data.data.sessionId,
+                hasRealTimeData: data.data.hasRealTimeData,
                 usage: data.data.usage
             };
         } catch (error) {

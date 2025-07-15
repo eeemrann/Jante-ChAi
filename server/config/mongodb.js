@@ -1,8 +1,8 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,26 +23,45 @@ class MongoDB {
         return this.db;
       }
 
-      const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+      let mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
       const databaseName = process.env.DB_NAME || 'jante-chai';
+
+      // --- TLS/SSL options ---
+      const mongoOptions = {
+        // Only enable TLS if needed (Atlas usually requires it, but allow override)
+        tls: !mongoUri.startsWith('mongodb://localhost'),
+        serverApi: { version: '1' }
+      };
+      // Optionally use a custom CA file for strict enterprise/Windows environments
+      if (process.env.MONGODB_CA_FILE && fs.existsSync(process.env.MONGODB_CA_FILE)) {
+        mongoOptions.tlsCAFile = process.env.MONGODB_CA_FILE;
+        console.log('[INFO] Using custom CA file for MongoDB TLS:', mongoOptions.tlsCAFile);
+      }
+      // Allow disabling TLS for troubleshooting
+      if (process.env.DISABLE_MONGODB_TLS === 'true') {
+        mongoOptions.tls = false;
+        delete mongoOptions.tlsCAFile;
+        console.warn('[WARN] TLS is disabled for MongoDB connection (not recommended for production)');
+      }
 
       console.log('[INFO] Connecting to MongoDB for ChatBot service...');
       console.log('[INFO] Using database:', databaseName);
-      
-      this.client = new MongoClient(mongoUri);
+      this.client = new MongoClient(mongoUri, mongoOptions);
       await this.client.connect();
-      
       this.db = this.client.db(databaseName);
       this.isConnected = true;
-      
       console.log('✅ ChatBot MongoDB connection established');
-      
-      // Create indexes for better performance
       await this.createIndexes();
-      
       return this.db;
     } catch (error) {
-      console.error('❌ ChatBot MongoDB connection error:', error);
+      if (error.message && error.message.toLowerCase().includes('tls')) {
+        console.error('❌ MongoDB TLS/SSL error:', error);
+        console.error('If you are on Windows, ensure your system CA certificates are up to date.');
+        console.error('If you use antivirus/firewall, ensure it does not intercept SSL.');
+        console.error('If you are in a strict enterprise environment, set MONGODB_CA_FILE in .env to the Atlas CA PEM file.');
+      } else {
+        console.error('❌ ChatBot MongoDB connection error:', error);
+      }
       throw error;
     }
   }
@@ -234,7 +253,4 @@ class MongoDB {
 
 // Create and export singleton instance
 const mongodb = new MongoDB();
-export { mongodb };
-
-// Export ObjectId for use in other files
-export { ObjectId };
+export { mongodb, ObjectId };

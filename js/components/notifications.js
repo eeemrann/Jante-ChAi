@@ -120,4 +120,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = NotificationManager;
-} 
+}

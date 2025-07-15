@@ -3,12 +3,13 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import fs from 'fs/promises';
 
 import AuthenticationService from './controllers/auth.js';
 import { ChatBot } from './services/chatbot.js';
 import { getUserChatSessions } from './config/database.js';
 import { mongodb } from './config/mongodb.js';
-import { getGroqAccountInfo } from './services/groq.js';
+import { generateGeminiResponse, loadChunksFromData, generateGeminiEmbeddings, cosineSimilarity, findMostRelevantChunks, queryGeminiWithContext } from './services/groq.js'; // Gemini integration
 
 // Load environment variables
 dotenv.config();
@@ -57,11 +58,9 @@ async function connectToDatabase() {
         await authService.initialize();
         console.log('[INFO] MongoDB Atlas connection established');
         console.log('[INFO] Authentication service initialized successfully');
-        
         // Initialize ChatBot MongoDB connection
         await mongodb.connect();
         console.log('[INFO] ChatBot MongoDB connection established');
-        
     } catch (error) {
         console.error('[ERROR] Failed to initialize database/auth:', error.message);
         process.exit(1);
@@ -345,11 +344,15 @@ app.post('/api/chat/message', async (req, res) => {
 
         const response = await chatBot.sendMessage(message, targetSessionId);
 
+        // Clean up resources
+        await chatBot.cleanup();
+
         res.json({
             success: true,
             data: {
                 response: response.response,
                 sessionId: response.sessionId,
+                hasRealTimeData: response.hasRealTimeData,
                 usage: response.usage
             }
         });
@@ -382,6 +385,9 @@ app.post('/api/chat/new-session', async (req, res) => {
         const chatBot = new ChatBot(authResult.user.id);
         const sessionId = await chatBot.startNewChat(title || 'New Chat');
 
+        // Clean up resources
+        await chatBot.cleanup();
+
         res.json({
             success: true,
             data: { sessionId }
@@ -396,34 +402,60 @@ app.post('/api/chat/new-session', async (req, res) => {
     }
 });
 
-// Groq account info route
-app.get('/api/groq/account-info', async (req, res) => {
-    try {
-        const token = req.headers.authorization;
-        
-        // Verify token first
-        const authResult = await authService.verifyAuthToken(token);
-        if (!authResult.success) {
-            return res.status(401).json({
-                success: false,
-                error: authResult.error
-            });
-        }
+// RAG cache file path
+const EMBEDDINGS_PATH = path.join(__dirname, 'services', 'embeddings.json');
 
-        const accountInfo = await getGroqAccountInfo();
-
-        res.json({
-            success: true,
-            data: accountInfo
-        });
-
-    } catch (error) {
-        console.error('[ERROR] Groq account info error:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Internal server error'
-        });
+// POST /api/ask - RAG chatbot endpoint
+app.post('/api/ask', async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ success: false, error: 'Message is required' });
     }
+
+    // Load chunks
+    const chunks = await loadChunksFromData();
+    // Try to load cached embeddings
+    let embeddingsCache = {};
+    try {
+      const cacheRaw = await fs.readFile(EMBEDDINGS_PATH, 'utf-8');
+      embeddingsCache = JSON.parse(cacheRaw);
+    } catch (e) {
+      embeddingsCache = {};
+    }
+
+    // If not cached, generate and cache embeddings
+    let allEmbeddings = [];
+    let needsUpdate = false;
+    if (!embeddingsCache.ids || embeddingsCache.ids.length !== chunks.length) {
+      const texts = chunks.map(c => c.text);
+      allEmbeddings = await generateGeminiEmbeddings(texts);
+      embeddingsCache = {
+        ids: chunks.map(c => c.id),
+        embeddings: allEmbeddings
+      };
+      needsUpdate = true;
+    } else {
+      allEmbeddings = embeddingsCache.embeddings;
+    }
+
+    // Save cache if updated
+    if (needsUpdate) {
+      await fs.writeFile(EMBEDDINGS_PATH, JSON.stringify(embeddingsCache, null, 2), 'utf-8');
+    }
+
+    // Embed user query
+    const queryEmbeddingArr = await generateGeminiEmbeddings([message]);
+    const queryEmbedding = queryEmbeddingArr[0];
+    // Find top relevant chunks
+    const topChunks = findMostRelevantChunks(queryEmbedding, allEmbeddings, chunks, 2);
+    // Query Gemini with context
+    const answer = await queryGeminiWithContext(message, topChunks);
+    res.json({ success: true, answer });
+  } catch (error) {
+    console.error('[RAG /api/ask error]', error);
+    res.status(500).json({ success: false, error: 'Failed to generate answer' });
+  }
 });
 
 // Serve HTML files
@@ -491,7 +523,7 @@ async function startServer() {
             console.log(`Local Network: http://0.0.0.0:${actualPort}`);
             console.log(`Database: MongoDB Atlas (Connected)`);
             console.log(`Authentication: JWT-based system (Ready)`);
-            console.log(`AI Service: Groq API (Ready)`);
+            console.log(`AI Service: Gemini API (Ready)`);
             console.log(`Frontend: Static files served from root`);
             console.log(`Started at: ${new Date().toLocaleString()}`);
             console.log('='.repeat(60));
@@ -524,7 +556,7 @@ async function startServer() {
                         console.log(`Local Network: http://0.0.0.0:${actualPort}`);
                         console.log(`Database: MongoDB Atlas (Connected)`);
                         console.log(`Authentication: JWT-based system (Ready)`);
-                        console.log(`AI Service: Groq API (Ready)`);
+                        console.log(`AI Service: Gemini API (Ready)`);
                         console.log(`Frontend: Static files served from root`);
                         console.log(`Started at: ${new Date().toLocaleString()}`);
                         console.log('='.repeat(60));

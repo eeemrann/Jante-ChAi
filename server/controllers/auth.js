@@ -6,6 +6,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { MongoClient, ObjectId } from 'mongodb';
+import fs from 'fs';
 
 class AuthenticationService {
     constructor() {
@@ -27,26 +28,45 @@ class AuthenticationService {
      */
     async initialize() {
         try {
-            const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+            let mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
             const databaseName = process.env.DB_NAME || 'jante-chai';
+
+            // --- TLS/SSL options ---
+            const mongoOptions = {
+                tls: !mongoUri.startsWith('mongodb://localhost'),
+                serverApi: { version: '1' }
+            };
+            // Optionally use a custom CA file for strict enterprise/Windows environments
+            if (process.env.MONGODB_CA_FILE && fs.existsSync(process.env.MONGODB_CA_FILE)) {
+                mongoOptions.tlsCAFile = process.env.MONGODB_CA_FILE;
+                console.log('[INFO] Using custom CA file for MongoDB TLS:', mongoOptions.tlsCAFile);
+            }
+            // Allow disabling TLS for troubleshooting
+            if (process.env.DISABLE_MONGODB_TLS === 'true') {
+                mongoOptions.tls = false;
+                delete mongoOptions.tlsCAFile;
+                console.warn('[WARN] TLS is disabled for MongoDB connection (not recommended for production)');
+            }
 
             console.log('[INFO] Connecting to MongoDB...');
             console.log('[INFO] Using database:', databaseName);
-            
-            this.mongoClient = new MongoClient(mongoUri);
+            this.mongoClient = new MongoClient(mongoUri, mongoOptions);
             await this.mongoClient.connect();
-            
             this.database = this.mongoClient.db(databaseName);
             this.usersCollection = this.database.collection('users');
             this.sessionsCollection = this.database.collection('sessions');
-
-            // Create database indexes for performance
             await this.createDatabaseIndexes();
-            
             console.log('[INFO] Authentication service initialized successfully');
             return true;
         } catch (error) {
-            console.error('[ERROR] Failed to initialize auth service:', error);
+            if (error.message && error.message.toLowerCase().includes('tls')) {
+                console.error('[ERROR] MongoDB TLS/SSL error:', error);
+                console.error('If you are on Windows, ensure your system CA certificates are up to date.');
+                console.error('If you use antivirus/firewall, ensure it does not intercept SSL.');
+                console.error('If you are in a strict enterprise environment, set MONGODB_CA_FILE in .env to the Atlas CA PEM file.');
+            } else {
+                console.error('[ERROR] Failed to initialize auth service:', error);
+            }
             throw error;
         }
     }
