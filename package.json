@@ -11,7 +11,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.17.0",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^24.11.2"
+    "puppeteer": "^24.11.2",
+    "serverless-http": "^3.2.0"
   },
   "name": "jante_ch-ai",
   "version": "1.0.0",
