@@ -11,6 +11,10 @@ import { getUserChatSessions } from './config/database.js';
 import { mongodb } from './config/mongodb.js';
 import { generateGeminiResponse, loadChunksFromData, generateGeminiEmbeddings, cosineSimilarity, findMostRelevantChunks, queryGeminiWithContext } from './services/groq.js'; // Gemini integration
 
+module.exports = (req, res) => {
+  res.status(200).json({ message: "Hello from Vercel!" });
+};
+
 // Load environment variables
 dotenv.config();
 
