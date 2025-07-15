@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 
 import AuthenticationService from './controllers/auth.js';
@@ -11,11 +11,6 @@ import { getUserChatSessions } from './config/database.js';
 import { mongodb } from './config/mongodb.js';
 import { generateGeminiResponse, loadChunksFromData, generateGeminiEmbeddings, cosineSimilarity, findMostRelevantChunks, queryGeminiWithContext } from './services/groq.js'; // Gemini integration
 
-module.exports = (req, res) => {
-  res.status(200).json({ message: "Hello from Vercel!" });
-};
-
-// Load environment variables
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -603,3 +598,5 @@ process.on('SIGINT', () => {
 
 // Start the server
 startServer();
+
+export default app;
